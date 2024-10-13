@@ -1,0 +1,73 @@
+:root {
+    --button-color: #42A5F5; /* Blue accent color */
+    --dark-bg: #1E1E1E; /* Dark background */
+    --dark-bg-light: #2A2A2A; /* Slightly lighter dark background for containers */
+    --light-text: #ffffff; /* White text for contrast */
+    --border-radius: 8px; /* Slightly rounded corners */
+  }
+  
+  .page-container {
+    background-color: var(--dark-bg-light);
+    color: var(--light-text);
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  }
+  
+  .page-title {
+    text-align: center;
+    font-size: 32px;
+    color: var(--button-color); /* Blue accent for titles */
+    margin-bottom: 20px;
+  }
+  
+  .account-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .primary-btn, .secondary-btn {
+    background-color: var(--button-color);
+    color: var(--light-text);
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .primary-btn:hover, .secondary-btn:hover {
+    background-color: #358bb7; /* Darker blue on hover */
+  }
+  
+  .secondary-btn {
+    background-color: #555; /* Grey for secondary button */
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  /* Specific style for the Take Survey button */
+  button.take-survey-btn {
+    background-color: var(--button-color);
+  }
+  
+  button.take-survey-btn:hover {
+    background-color: #358bb7; /* Darker blue on hover for the survey button */
+  }
+  
+  /* Style for the Survey button */
+  .take-survey-btn {
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    color: var(--light-text);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px; /* Add some spacing above the button */
+  }
+  

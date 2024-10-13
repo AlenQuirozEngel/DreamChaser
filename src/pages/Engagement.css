@@ -1,0 +1,20 @@
+.page-container {
+    padding: 20px;
+    background-color: var(--dark-bg-light);
+    border-radius: var(--border-radius);
+  }
+  
+  .chart-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px; /* Set height for the charts */
+  }
+  

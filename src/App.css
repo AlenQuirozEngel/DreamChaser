@@ -1,0 +1,159 @@
+/* Ensure the app uses flexbox to manage the layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+}
+
+html{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensure padding doesn't add to width */
+
+  background-color: transparent; /* Make sure there is no white background */
+  height: 100%; /* Ensure the body and html take full height */
+}
+
+* {
+  box-sizing: border-box; /* Apply the box-sizing rule to all elements */
+}
+
+/* Content should take the available space, pushing navbar to the bottom */
+.content {
+  flex: 1; /* Ensures content area stretches */
+  padding-bottom: 60px; /* Space for fixed bottom navbar */
+}
+
+/* Navbar fixed at the bottom */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: indigo;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Navbar styles */
+.bottom-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.bottom-nav ul li {
+  display: inline-block;
+}
+
+.bottom-nav ul li a {
+  color: limegreen;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background-color: var(--button-color);
+  transition: background-color 0.3s ease;
+}
+
+.bottom-nav ul li a:hover {
+  background-color: #4c9ed9;
+}
+
+
+button, .nav-btn {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, .nav-btn:hover {
+  background-color: darken(var(--button-color), 10%);
+}
+
+
+:root {
+  --button-color: #42A5F5; /* Blue Accent */
+  --dark-bg: #1E1E1E; /* Dark Background */
+  --dark-bg-light: #2A2A2A; /* Slightly lighter dark for containers */
+  --light-text: #ffffff; /* White text for contrast */
+  --border-radius: 8px; /* Slightly rounded corners */
+}
+
+body {
+  background-color: var(--dark-bg); /* Global dark background */
+  color: var(--light-text); /* Global light text */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/* Global container styles */
+.page-container {
+  background-color: var(--dark-bg-light);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+}
+
+.page-title {
+  text-align: center;
+  font-size: 32px;
+  color: var(--button-color); /* Blue accent for titles */
+  margin-bottom: 20px;
+}
+
+input, select {
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: var(--dark-bg-light);
+  color: var(--light-text);
+  border: 1px solid #3A3A3A;
+  border-radius: var(--border-radius);
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--button-color); /* Blue border on focus */
+}
+
+.primary-btn {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.primary-btn:hover {
+  background-color: #358bb7;
+}
+
+.secondary-btn {
+  background-color: #555555;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.secondary-btn:hover {
+  background-color: #666666;
+}

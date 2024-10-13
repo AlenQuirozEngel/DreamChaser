@@ -1,0 +1,52 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Full width of the screen */
+  background-color: #1c1c1c; /* Darker background color */
+  display: flex;
+  justify-content: center; /* Centers items horizontally */
+  align-items: center; /* Centers items vertically */
+  padding: 15px 0; /* Padding for a better look */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  z-index: 1000;
+  border-radius: 10px 10px 0 0; /* Rounded top corners only */
+}
+
+.bottom-nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  gap: 30px; /* Gap between buttons */
+  margin: 0;
+  padding: 0;
+}
+
+.bottom-nav ul li {
+  display: inline-block;
+}
+
+.bottom-nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 10px; /* Soft square shape */
+  background-color: #333; /* Slightly lighter than the navbar */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bottom-nav ul li a:hover {
+  background-color: var(--accent-color); /* Use your accent color for hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow on hover */
+}
+
+/* Adjust the logo/icon styling if you want to keep it */
+.logo {
+  max-width: 40px; /* Set a reasonable width */
+  max-height: 40px; /* Set a reasonable height */
+  object-fit: contain; /* Ensure it fits without stretching */
+  border-radius: 50%; /* Make the icon circular */
+  margin-right: 10px; /* Add space between the icon and the text */
+}
