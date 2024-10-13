@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Goals.css'; // Import the CSS
-
+import TestDataGenerator from 'C:/Users/Vincent Helms/Documents/GitHub/DreamChaser/TestDataGenerator.jsx';
 const Goals = () => {
   const [goals, setGoals] = useState(() => {
     // Load goals from localStorage
@@ -10,6 +10,7 @@ const Goals = () => {
 
   const [newGoal, setNewGoal] = useState(''); // New goal input
   const [goalColor, setGoalColor] = useState('#ffffff'); // Color for the new goal
+  const [showDeleteButtons, setShowDeleteButtons] = useState(false);
 
   // Save goals to localStorage whenever goals change
   useEffect(() => {
@@ -37,7 +38,25 @@ const addGoal = () => {
     setGoalColor('#ffffff'); // Reset the color picker
   }
 };
+const DeleteGoal = (id) => {
+  const goalToDelete = goals.find(goal => goal.id === id);
+  const updatedGoals = goals.filter(goal => goal.id !== id);
+  setGoals(updatedGoals);
 
+  // Delete tasks associated with the deleted goal
+  const savedTasks = localStorage.getItem('tasks');
+  if (savedTasks) {
+    const parsedTasks = JSON.parse(savedTasks);
+    const updatedTasks = Object.entries(parsedTasks).reduce((acc, [day, dayTasks]) => {
+      acc[day] = dayTasks.filter(task => task.goal !== goalToDelete.goal);
+      if (acc[day].length === 0) {
+        delete acc[day];
+      }
+      return acc;
+    }, {});
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  }
+};
 
   // Drag and drop handling
   const handleDragStart = (e, index) => {
@@ -50,7 +69,7 @@ const addGoal = () => {
 
     // Copy the current goals
     const updatedGoals = [...goals];
-    const [draggedGoal] = updatedGoals.splice(draggedGoalIndex, 1); // Remove the dragged goal
+    const [draggedGoal] = updatedGoals.splice(draggedGoalIndex, 1); // Delete the dragged goal
     updatedGoals.splice(dropIndex, 0, draggedGoal); // Insert the dragged goal at the drop position
 
     // Update ranks and set new order
@@ -61,7 +80,12 @@ const addGoal = () => {
   return (
     <div className="goals-page">
       <h2>Your Goals</h2>
-      
+      <button 
+        className="toggle-Delete-btn"
+        onClick={() => setShowDeleteButtons(!showDeleteButtons)}
+      >
+        {showDeleteButtons ? 'Cancel Deletion' : 'Delete Goals'}
+      </button>
       {/* Goals List with Drag and Drop */}
       <ul className="goal-list">
         {goals.length > 0 ? (
@@ -77,6 +101,7 @@ const addGoal = () => {
             >
               <span className="goal-rank">{goalItem.rank}.</span>
               <span className="goal-name">{goalItem.goal}</span>
+              {showDeleteButtons && (<button onClick={() => DeleteGoal(goalItem.id)} className="Delete-goal-btn">Delete</button>)}
             </li>
           ))
         ) : (
@@ -99,6 +124,7 @@ const addGoal = () => {
         />
         <button onClick={addGoal} className="add-goal-btn">Add Goal</button>
       </div>
+      <TestDataGenerator setGoals={setGoals} setTasks={() => {}} />
     </div>
   );
 };

@@ -1,30 +1,32 @@
-/* Root theme variables */
 :root {
-  --dark-bg: #121212;
+  --button-color: #42A5F5;
+  --dark-bg: #1E1E1E;
+  --dark-bg-light: #2A2A2A;
   --light-text: #ffffff;
-  --accent-color: #4c9ed9; /* Blue accent */
-  --task-modal-bg: rgba(0, 0, 0, 0.8);
-  --task-modal-content-bg: #1f1f1f;
+  --border-radius: 8px;
 }
 
 .calendar-page {
-  background-color: var(--dark-bg);
+  background-color: var(--dark-bg-light);
   color: var(--light-text);
-  padding: 20px; /* This controls the internal padding of the content */
-  min-height: 100vh; /* Ensures full height */
-  margin: 0; /* Remove any margin */
-  box-sizing: border-box; /* Ensures internal padding doesn't add extra size */
-  margin: 0 10px; /* Add horizontal margin to the buttons */
-
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 80vh;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
 }
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* Ensure 7 days per week */
+  grid-template-columns: repeat(7, 1fr);
   gap: 10px;
-  margin: 0; /* No margin around the grid */
+  background-color: var(--dark-bg-light);
+  border-radius: var(--border-radius);
+  padding: 15px;
 }
-
 
 .calendar-title {
   text-align: center;
@@ -32,12 +34,11 @@
   margin-bottom: 20px;
 }
 
-/* Each day in the calendar */
 .calendar-day {
-  background-color: var(--dark-bg);
+  background-color: var(--dark-bg-light);
   color: var(--light-text);
-  border: 2px solid var(--accent-color);
-  border-radius: 10px;
+  border: 2px solid var(--button-color);
+  border-radius: var(--border-radius);
   padding: 20px;
   text-align: center;
   cursor: pointer;
@@ -45,18 +46,17 @@
 }
 
 .calendar-day:hover {
-  background-color: var(--accent-color);
+  background-color: var(--button-color);
   transform: scale(1.05);
 }
 
-/* Task modal styling */
 .task-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--task-modal-bg);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,75 +64,78 @@
 }
 
 .task-content {
-  background-color: var(--task-modal-content-bg);
+  background-color: var(--dark-bg-light);
   color: var(--light-text);
   padding: 20px;
-  border-radius: 10px;
-  width: 400px;
+  border-radius: var(--border-radius);
+  width: 650px;
   text-align: center;
+  display: flex;
+  flex-direction: column; 
+  height: 80vh; 
+  overflow-y: auto; 
 }
 
 .task-content ul {
   list-style: none;
   padding: 0;
+  flex: 1; 
 }
 
 .task-content ul li {
   margin-bottom: 10px;
   padding: 10px;
-  background-color: var(--accent-color);
-  border-radius: 5px;
+  background-color: var(--button-color);
+  border-radius: var(--border-radius);
 }
 
-.close-btn {
-  background-color: var(--accent-color);
+.close-btn,
+.add-task-btn {
+  background-color: var(--button-color);
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  color: white;
-  margin-top: 20px;
+  color: var(--light-text);
   transition: background-color 0.3s ease;
 }
 
-.close-btn:hover {
-  background-color: #358bb7;
-}
-/* General button styles for modal navigation */
 .nav-btn {
-  background-color: var(--accent-color);
+  background-color: var(--button-color);
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  color: white;
+  color: var(--light-text);
   transition: background-color 0.3s ease;
+  margin: 50px;
+  margin-top: 0px;
 }
 
-.nav-btn:hover {
+.close-btn:hover,
+.nav-btn:hover,
+.add-task-btn:hover {
   background-color: #358bb7;
 }
 
-/* Day navigation section */
 .day-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  background-color: var(--dark-bg-light);
   padding: 10px;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   margin-bottom: 20px;
 }
 
 .current-date {
-  color: white;
+  color: var(--light-text);
   font-size: 1.2rem;
 }
 
-/* Task list section */
 .task-list-container {
-  max-height: 200px; /* Set a maximum height for the scrollable task list */
-  overflow-y: auto;
+  flex: 1; 
+  overflow-y: auto; 
   margin-bottom: 20px;
 }
 
@@ -147,7 +150,7 @@
   justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #444;
-  color: white;
+  color: var(--light-text);
 }
 
 .task-item:last-child {
@@ -160,7 +163,19 @@
 }
 
 .task-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 75%;
+}
+
+.task-goal {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.task-description {
+  text-align: center;
 }
 
 .no-task {
@@ -175,51 +190,68 @@
   margin-top: 20px;
 }
 
-.add-task-form input {
+.add-task-form input,
+.add-task-form select {
   padding: 10px;
-  margin-right: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.add-task-btn {
-  background-color: var(--accent-color);
-  border: none;
-  padding: 10px 20px; /* Squared button with comfortable padding */
-  border-radius: 5px; /* Slightly rounded corners */
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-  margin-left: 10px; /* Ensure spacing between the dropdown and button */
-}
-
-.add-task-btn:hover {
-  background-color: #358bb7;
-}
-
-
-.add-task-form input, .add-task-form select {
-  padding: 10px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   border: 1px solid #ccc;
   margin-bottom: 10px;
 }
 
-
 .done-btn {
-  background-color: var(--accent-color); /* Use your accent color */
+  background-color: #00c313;
   border: none;
   padding: 5px 10px;
-  border-radius: 5px;
-  color: white;
+  border-radius: var(--border-radius);
+  color: var(--light-text);
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-left: 10px; /* Spacing between task name and button */
+  margin-left: 10px;
 }
 
 .done-btn:hover {
-  background-color: #358bb7; /* Darker shade on hover */
+  background-color: #358bb7;
 }
 
+.calendar-day-with-tasks {
+  background-color: var(--button-color);
+  color: var(--light-text);
+}
 
+.toggle-delete-btn,
+.close-btn {
+  background-color: var(--button-color);
+  color: var(--light-text);
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 10px; 
+}
+
+.toggle-delete-btn:hover,
+.close-btn:hover {
+  background-color: #358bb7;
+}
+
+.delete-task-btn {
+  background-color: #ff4d4d;
+  color: var(--light-text);
+  border: none;
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+.delete-task-btn:hover {
+  background-color: #ff3333;
+}
+
+.task-content > button { 
+  margin-top: auto; 
+  margin-bottom: 10px; 
+}

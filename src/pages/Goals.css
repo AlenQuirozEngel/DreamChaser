@@ -7,7 +7,7 @@
   }
   
   .goals-page {
-    background-color: var(--dark-bg);
+    background-color: var(--dark-bg-light);
     color: var(--light-text);
     padding: 20px;
     max-width: 800px;
@@ -36,10 +36,12 @@
     border: 1px solid #333;
     color: var(--light-text);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     cursor: grab;
     transition: background-color 0.3s ease;
+    height: 20px;
+    position: relative;
   }
   
   .goal-item:hover {
@@ -47,8 +49,8 @@
   }
   
   .goal-rank {
-    font-weight: bold;
-    margin-right: 10px;
+    position: absolute;
+    left: 15px;
   }
   
   .no-goals {
@@ -92,6 +94,40 @@
   }
   
   .add-goal-btn:hover {
+    background-color: #358bb7;
+  }
+  
+  .Delete-goal-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+  }
+  
+  .Delete-goal-btn:hover {
+    background-color: #ff3333;
+  }
+  
+  .toggle-Delete-btn {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    float: right;
+    margin-top: -50px
+  }
+  
+  .toggle-Delete-btn:hover {
     background-color: #358bb7;
   }
   
