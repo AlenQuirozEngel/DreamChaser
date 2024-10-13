@@ -13,6 +13,7 @@ const Engagement = () => {
   useEffect(() => {
     const fetchData = async () => {
       const tasksData = JSON.parse(localStorage.getItem('tasks') || '{}');
+      const goalsData = JSON.parse(localStorage.getItem('goals') || '[]');
       const uniqueGoals = new Set();
       const monthlyData = {};
 
@@ -29,7 +30,12 @@ const Engagement = () => {
         });
       }
 
-      const goalsArray = Array.from(uniqueGoals).map(goal => ({ name: goal }));
+      const goalsWithColors = goalsData.map(goal => ({
+        ...goal,
+        backgroundColor: goal.color,
+        borderColor: goal.color,
+      }));
+
       const allGoalsData = Object.values(monthlyData).reduce((acc, curr) => acc.map((x, i) => x + (curr[i] || 0)), new Array(12).fill(0));
 
       setChartData({
@@ -39,12 +45,15 @@ const Engagement = () => {
           backgroundColor: '#ccc',
           borderColor: '#ccc',
         },
-        individualGoals: Object.entries(monthlyData).map(([goal, data]) => ({
-          name: goal,
-          data: data,
-          backgroundColor: '#ccc',
-          borderColor: '#ccc',
-        })),
+        individualGoals: Object.entries(monthlyData).map(([goalName, data]) => {
+          const goal = goalsWithColors.find(g => g.goal === goalName);
+          return {
+            name: goalName,
+            data: data,
+            backgroundColor: goal ? goal.backgroundColor : '#ccc',
+            borderColor: goal ? goal.borderColor : '#ccc',
+          };
+        }),
       });
     };
 

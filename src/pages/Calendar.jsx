@@ -19,6 +19,7 @@ const Calendar = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [showDeleteButtons, setShowDeleteButtons] = useState(false);
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const [completedTaskHistory, setCompletedTaskHistory] = useState([]);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -48,16 +49,18 @@ const Calendar = () => {
   };
 
   const nextDay = () => {
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const nextDay = (parseInt(selectedDay.split('-')[2]) % daysInMonth) + 1;
-    const nextDayString = `${currentYear}-${currentMonth + 1}-${nextDay}`;
+    const date = new Date(currentYear, currentMonth, parseInt(selectedDay.split('-')[2]));
+    date.setDate(date.getDate() + 1);
+    setCurrentMonth(date.getMonth());
+    setCurrentYear(date.getFullYear());
+    const nextDayString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     setSelectedDay(nextDayString);
   };
 
   const prevDay = () => {
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const prevDay = (parseInt(selectedDay.split('-')[2]) - 2 + daysInMonth) % daysInMonth + 1;
-    const prevDayString = `${currentYear}-${currentMonth + 1}-${prevDay}`;
+    const date = new Date(currentYear, currentMonth, parseInt(selectedDay.split('-')[2]));
+    date.setDate(date.getDate() - 1);
+    const prevDayString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     setSelectedDay(prevDayString);
   };
 
@@ -74,7 +77,7 @@ const Calendar = () => {
     setNewTask((prev) => ({ ...prev, [name]: value }));
   };
 
-  const addTask = (newTask, selectedDay) => { 
+  const addTask = (newTask, selectedDay) => {
     if (newTask.time && newTask.task) {
       setTasks((prevTasks) => {
         const updatedTasks = { ...prevTasks };
@@ -86,15 +89,38 @@ const Calendar = () => {
   };
 
   const markAsDone = (day, index) => {
-    setTasks((prevTasks) => {
-      const updatedTasks = { ...prevTasks };
-      updatedTasks[day] = updatedTasks[day].map((task, i) => (i === index ? { ...task, completed: true } : task));
-      return updatedTasks;
-    });
-
+    const updatedTasks = { ...tasks };
+    const task = updatedTasks[day][index];
+    task.completed = true;
+    setTasks(updatedTasks);
+    setCompletedTaskHistory([...completedTaskHistory, { day, index, task }]); 
     const completedTask = tasks[day][index];
     setGoals((prevGoals) =>
       prevGoals.map((goal) => (goal.goal === completedTask.goal ? { ...goal, completedCount: (goal.completedCount || 0) + 1 } : goal))
+    );
+  };
+
+  const uncheckTask = (day, index) => {
+    setTasks((prevTasks) => {
+      const updatedTasks = { ...prevTasks };
+      const task = updatedTasks[day][index];
+      task.completed = false;
+
+      // Move the task from completed to current tasks
+      updatedTasks[day] = updatedTasks[day].filter((_, i) => i !== index);
+      updatedTasks[day] = [...(updatedTasks[day] || []), task];
+
+      return updatedTasks;
+    });
+
+    // Ensure the UI re-renders with the updated state
+    setTimeout(() => {
+      setTasks((prevTasks) => ({...prevTasks}));
+    }, 0);
+
+    const completedTask = tasks[day][index];
+    setGoals((prevGoals) =>
+      prevGoals.map((goal) => (goal.goal === completedTask.goal ? { ...goal, completedCount: Math.max(0, (goal.completedCount || 0) - 1) } : goal))
     );
   };
 
@@ -206,6 +232,20 @@ const Calendar = () => {
                       {taskItem.goal && <div className="task-goal">{taskItem.goal}</div>}
                       <div className="task-description">{taskItem.task}</div>
                     </span>
+                    <button
+                      className="uncheck-btn"
+                      onClick={() => uncheckTask(selectedDay, index)}
+                    >
+                      Uncheck
+                    </button>
+                    {showDeleteButtons && (
+                        <button
+                          className="delete-task-btn"
+                          onClick={() => deleteTask(selectedDay, index)}
+                        >
+                          Delete
+                        </button>
+                      )}
                   </li>
                 ))}
               </ul>

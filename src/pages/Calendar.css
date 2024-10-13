@@ -87,6 +87,7 @@
   padding: 10px;
   background-color: var(--button-color);
   border-radius: var(--border-radius);
+  position: relative; /* Added for button positioning */
 }
 
 .close-btn,
@@ -108,7 +109,7 @@
   cursor: pointer;
   color: var(--light-text);
   transition: background-color 0.3s ease;
-  margin: 50px;
+  margin: 40px;
   margin-top: 0px;
 }
 
@@ -129,8 +130,10 @@
 }
 
 .current-date {
-  color: var(--light-text);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  color: var(--button-color);
+  font-weight: bold;
+  margin-top: -10px; /* Adjust this value as needed */
 }
 
 .task-list-container {
@@ -245,6 +248,8 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-left: 10px;
+  position: relative; /* Added for button positioning */
+  z-index: 1; /* Added to ensure it's on top */
 }
 
 .delete-task-btn:hover {
@@ -254,4 +259,41 @@
 .task-content > button { 
   margin-top: auto; 
   margin-bottom: 10px; 
+}
+
+.undo-btn {
+  background-color: var(--button-color);
+  border: none;
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  color: var(--light-text);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+.undo-btn:hover {
+  background-color: #358bb7;
+}
+
+.uncheck-btn {
+  background-color: var(--button-color);
+  border: none;
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  color: var(--light-text);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+  position: relative; /* Added for button positioning */
+  z-index: 0; /* Added to ensure it's below delete button */
+}
+
+.uncheck-btn:hover {
+  background-color: #358bb7;
+}
+
+.task-item-container {
+  display: flex;
+  align-items: center;
 }
