@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Goals.css'; // Import the CSS
-import TestDataGenerator from 'C:/Users/Vincent Helms/Documents/GitHub/DreamChaser/TestDataGenerator.jsx';
+import TestDataGenerator from '../components/TestDataGenerator.jsx';
 const Goals = () => {
   const [goals, setGoals] = useState(() => {
     // Load goals from localStorage

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.css';
-import TestDataGenerator from 'C:/Users/Vincent Helms/Documents/GitHub/DreamChaser/TestDataGenerator.jsx';
+import TestDataGenerator from '../components/TestDataGenerator.jsx';
 import AddTaskForm from '../components/AddTaskForm';
 
 const Calendar = () => {
