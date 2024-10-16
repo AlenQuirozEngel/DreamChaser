@@ -734,12 +734,17 @@ const loadExampleData = (datasetNumber) => {
     exampleData = {
       
     };
+    exampleGoals = [];
   }
-  setGoals(exampleGoals);
-  setTasks(exampleData);
-  localStorage.setItem('goals', JSON.stringify(exampleGoals));
-  localStorage.setItem('tasks', JSON.stringify(exampleData));
+  const exampleGoalsWithIds = exampleGoals.map((goal, index) => ({
+    ...goal,
+    id: index + 1
+  }));
 
+  setGoals(exampleGoalsWithIds);
+  setTasks(exampleData);
+  localStorage.setItem('goals', JSON.stringify(exampleGoalsWithIds));
+  localStorage.setItem('tasks', JSON.stringify(exampleData));
 };
 
   return (
