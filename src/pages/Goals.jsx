@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './Goals.css'; // Import the CSS
-import TestDataGenerator from '../components/TestDataGenerator.jsx';
 const Goals = () => {
   const [goals, setGoals] = useState(() => {
     // Load goals from localStorage
@@ -124,7 +123,6 @@ const DeleteGoal = (id) => {
         />
         <button onClick={addGoal} className="add-goal-btn">Add Goal</button>
       </div>
-      <TestDataGenerator setGoals={setGoals} setTasks={() => {}} />
     </div>
   );
 };

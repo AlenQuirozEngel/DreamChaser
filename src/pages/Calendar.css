@@ -336,3 +336,38 @@
   display: flex;
   align-items: center;
 }
+.example-data-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.example-data-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.example-data-buttons button:hover {
+  background-color: #45a049;
+}
+.suggest-schedule-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: var(--button-color);
+  color: var(--light-text);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggest-schedule-btn:hover {
+  background-color: #358bb7;
+}
