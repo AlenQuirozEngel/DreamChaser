@@ -22,11 +22,17 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  background-color: var(--dark-bg-light);
-  border-radius: var(--border-radius);
-  padding: 15px;
+  gap: 5px;
 }
+
+.day-name {
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border: none;
+}
+
 
 .calendar-title {
   text-align: center;
@@ -39,14 +45,23 @@
   color: var(--light-text);
   border: 2px solid var(--button-color);
   border-radius: var(--border-radius);
-  padding: 20px;
+  padding: 5px;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 60px;
 }
 
+.calendar-day.prev-month {
+  color: #7c7c7c;
+  background-color: #373737;
+  cursor: default;
+}
 .calendar-day:hover {
-  background-color: var(--button-color);
   transform: scale(1.05);
 }
 
@@ -217,7 +232,12 @@
 }
 
 .calendar-day-with-tasks {
-  background-color: var(--button-color);
+  color: var(--dark-bg);
+  font-weight: bold;
+}
+.day-number {
+  z-index: 1;
+  position: relative;
   color: var(--light-text);
 }
 
@@ -260,6 +280,25 @@
   margin-top: auto; 
   margin-bottom: 10px; 
 }
+.task-color-container {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: calc(100% - 30px); /* Increased the subtracted value */
+}
+
+.task-color-block {
+  height: 8px;
+  border-radius: 4px;
+  background-color: currentColor;
+  flex: 1;
+  min-height: 2px;
+}
+
 
 .undo-btn {
   background-color: var(--button-color);
