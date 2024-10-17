@@ -14,11 +14,10 @@ const Survey = ({ onSurveyComplete }) => {
     localStorage.setItem('hardestGoal', hardestGoal);
     localStorage.setItem('colorPreference', colorPreference);
     localStorage.setItem('modePreference', modePreference);
-
-  document.documentElement.style.setProperty('--button-color', colorPreference); // Apply the color immediately
-
-
-    onSurveyComplete(); // Call the callback to hide the survey
+  
+    document.documentElement.style.setProperty('--button-color', colorPreference);
+  
+    onSurveyComplete();
   };
 
   return (

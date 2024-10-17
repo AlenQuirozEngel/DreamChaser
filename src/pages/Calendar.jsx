@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.css';
 import AddTaskForm from '../components/AddTaskForm';
+import EngagementAI from '../components/EngagementAI';
 
 const Calendar = () => {
   const [tasks, setTasks] = useState(() => {
@@ -34,6 +35,11 @@ const Calendar = () => {
       setTasks(parsedTasks);
     }
   }, [selectedDay]);
+
+  useEffect(() => {
+    localStorage.setItem('completedTasks', JSON.stringify(completedTaskHistory));
+  }, [completedTaskHistory]);
+  
 
   const getDayNames = () => {
     return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -121,14 +127,22 @@ const Calendar = () => {
   };
 
   const markAsDone = (day, index) => {
-    const updatedTasks = { ...tasks };
-    const task = updatedTasks[day][index];
-    task.completed = true;
-    setTasks(updatedTasks);
-    setCompletedTaskHistory([...completedTaskHistory, { day, index, task }]); 
-    const completedTask = tasks[day][index];
+    setTasks((prevTasks) => {
+      const updatedTasks = { ...prevTasks };
+      const task = updatedTasks[day][index];
+      task.completed = true;
+      task.completionTime = new Date().toISOString();
+      return updatedTasks;
+    })
+  
+    // Add task completion time and save to history
+    const completedTask = { ...tasks[day][index], completionTime: new Date().toISOString() };
+    setCompletedTaskHistory(prevHistory => [...prevHistory, { day, task: completedTask }]);
+  
     setGoals((prevGoals) =>
-      prevGoals.map((goal) => (goal.goal === completedTask.goal ? { ...goal, completedCount: (goal.completedCount || 0) + 1 } : goal))
+      prevGoals.map((goal) => 
+        goal.goal === completedTask.goal ? { ...goal, completedCount: (goal.completedCount || 0) + 1 } : goal
+      )
     );
   };
 
@@ -346,235 +360,235 @@ const Calendar = () => {
     });
   };
 
-const loadExampleData = (datasetNumber) => {
-  let exampleData;
+  const loadExampleData = (datasetNumber) => {
+    let exampleData;
     let exampleGoals;
-  if (datasetNumber === 1) {
-    exampleData = {
-      "2024-8-1": [
-        {"time": "3:00", "task": "Study mathematics", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": true},
-        {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
-      ],
-      "2024-8-2": [
-        {"time": "2:00", "task": "Study physics", "goal": "Studying", "completed": false}
-      ],
+    if (datasetNumber === 1) {
+      exampleData = {
+        "2024-8-1": [
+          {"time": "3:00", "task": "Study mathematics", "goal": "Studying", "completed": false, "completionTime": "2024-08-01T04:15:00Z"},
+          {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": false, "completionTime": "2024-08-01T10:30:00Z"},
+          {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
+        ],
+        "2024-8-2": [
+          {"time": "2:00", "task": "Study physics", "goal": "Studying", "completed": false}
+        ],
       "2024-8-5": [
-        {"time": "4:00", "task": "Study history", "goal": "Studying", "completed": true},
-        {"time": "21:00", "task": "Prepare late night snack", "goal": "Cooking", "completed": true}
+        {"time": "4:00", "task": "Study history", "goal": "Studying", "completed": false},
+        {"time": "21:00", "task": "Prepare late night snack", "goal": "Cooking", "completed": false}
       ],
       "2024-8-6": [
-        {"time": "5:00", "task": "Study literature", "goal": "Studying", "completed": true}
+        {"time": "5:00", "task": "Study literature", "goal": "Studying", "completed": false}
       ],
       "2024-8-7": [
-        {"time": "3:00", "task": "Study chemistry", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": true}
+        {"time": "3:00", "task": "Study chemistry", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-8-8": [
         {"time": "1:00", "task": "Study biology", "goal": "Studying", "completed": false}
       ],
       "2024-8-9": [
-        {"time": "4:00", "task": "Study computer science", "goal": "Studying", "completed": true},
-        {"time": "14:00", "task": "Cook lunch", "goal": "Cooking", "completed": true}
+        {"time": "4:00", "task": "Study computer science", "goal": "Studying", "completed": false},
+        {"time": "14:00", "task": "Cook lunch", "goal": "Cooking", "completed": false}
       ],
       "2024-8-12": [
-        {"time": "2:00", "task": "Study economics", "goal": "Studying", "completed": true},
-        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": true}
+        {"time": "2:00", "task": "Study economics", "goal": "Studying", "completed": false},
+        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-8-13": [
         {"time": "5:00", "task": "Study psychology", "goal": "Studying", "completed": false}
       ],
       "2024-8-14": [
-        {"time": "3:00", "task": "Study sociology", "goal": "Studying", "completed": true},
+        {"time": "3:00", "task": "Study sociology", "goal": "Studying", "completed": false},
         {"time": "18:00", "task": "Prepare dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-8-15": [
-        {"time": "4:00", "task": "Study philosophy", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Bouldering", "goal": "Climbing", "completed": true}
+        {"time": "4:00", "task": "Study philosophy", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Bouldering", "goal": "Climbing", "completed": false}
       ],
       "2024-8-16": [
-        {"time": "2:00", "task": "Study art history", "goal": "Studying", "completed": true}
+        {"time": "2:00", "task": "Study art history", "goal": "Studying", "completed": false}
       ],
       "2024-8-19": [
-        {"time": "5:00", "task": "Study music theory", "goal": "Studying", "completed": true},
-        {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": true}
+        {"time": "5:00", "task": "Study music theory", "goal": "Studying", "completed": false},
+        {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": false}
       ],
       "2024-8-20": [
         {"time": "3:00", "task": "Study linguistics", "goal": "Studying", "completed": false},
-        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": true}
+        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-8-21": [
-        {"time": "4:00", "task": "Study anthropology", "goal": "Studying", "completed": true}
+        {"time": "4:00", "task": "Study anthropology", "goal": "Studying", "completed": false}
       ],
       "2024-8-22": [
-        {"time": "2:00", "task": "Study political science", "goal": "Studying", "completed": true},
+        {"time": "2:00", "task": "Study political science", "goal": "Studying", "completed": false},
         {"time": "14:00", "task": "Climbing gym session", "goal": "Climbing", "completed": false}
       ],
       "2024-8-23": [
-        {"time": "5:00", "task": "Study geography", "goal": "Studying", "completed": true},
-        {"time": "12:00", "task": "Cook lunch", "goal": "Cooking", "completed": true}
+        {"time": "5:00", "task": "Study geography", "goal": "Studying", "completed": false},
+        {"time": "12:00", "task": "Cook lunch", "goal": "Cooking", "completed": false}
       ],
       "2024-8-26": [
-        {"time": "3:00", "task": "Study environmental science", "goal": "Studying", "completed": true}
+        {"time": "3:00", "task": "Study environmental science", "goal": "Studying", "completed": false}
       ],
       "2024-8-27": [
         {"time": "4:00", "task": "Study astronomy", "goal": "Studying", "completed": false},
-        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": true}
+        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-8-28": [
-        {"time": "2:00", "task": "Study statistics", "goal": "Studying", "completed": true},
+        {"time": "2:00", "task": "Study statistics", "goal": "Studying", "completed": false},
         {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-8-29": [
-        {"time": "5:00", "task": "Study calculus", "goal": "Studying", "completed": true}
+        {"time": "5:00", "task": "Study calculus", "goal": "Studying", "completed": false}
       ],
       "2024-8-30": [
-        {"time": "3:00", "task": "Study organic chemistry", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": true}
+        {"time": "3:00", "task": "Study organic chemistry", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": false}
       ],
       "2024-9-02": [
-        {"time": "4:00", "task": "Study world history", "goal": "Studying", "completed": true},
-        {"time": "17:00", "task": "Prepare dinner", "goal": "Cooking", "completed": true}
+        {"time": "4:00", "task": "Study world history", "goal": "Studying", "completed": false},
+        {"time": "17:00", "task": "Prepare dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-9-3": [
         {"time": "2:00", "task": "Study literature analysis", "goal": "Studying", "completed": false}
       ],
       "2024-9-4": [
-        {"time": "5:00", "task": "Study physics mechanics", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": true}
+        {"time": "5:00", "task": "Study physics mechanics", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-9-5": [
-        {"time": "3:00", "task": "Study differential equations", "goal": "Studying", "completed": true}
+        {"time": "3:00", "task": "Study differential equations", "goal": "Studying", "completed": false}
       ],
       "2024-9-6": [
-        {"time": "4:00", "task": "Study molecular biology", "goal": "Studying", "completed": true},
+        {"time": "4:00", "task": "Study molecular biology", "goal": "Studying", "completed": false},
         {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": false}
       ],
       "2024-9-9": [
-        {"time": "2:00", "task": "Study computer algorithms", "goal": "Studying", "completed": true},
-        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": true}
+        {"time": "2:00", "task": "Study computer algorithms", "goal": "Studying", "completed": false},
+        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-9-10": [
         {"time": "5:00", "task": "Study macroeconomics", "goal": "Studying", "completed": false}
       ],
       "2024-9-11": [
-        {"time": "3:00", "task": "Study cognitive psychology", "goal": "Studying", "completed": true},
-        {"time": "13:00", "task": "Cook lunch", "goal": "Cooking", "completed": true}
+        {"time": "3:00", "task": "Study cognitive psychology", "goal": "Studying", "completed": false},
+        {"time": "13:00", "task": "Cook lunch", "goal": "Cooking", "completed": false}
       ],
       "2024-9-12": [
-        {"time": "4:00", "task": "Study social theory", "goal": "Studying", "completed": true}
+        {"time": "4:00", "task": "Study social theory", "goal": "Studying", "completed": false}
       ],
       "2024-9-13": [
-        {"time": "2:00", "task": "Study ethics", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": true}
+        {"time": "2:00", "task": "Study ethics", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": false}
       ],
       "2024-9-16": [
-        {"time": "5:00", "task": "Study modern art", "goal": "Studying", "completed": true},
+        {"time": "5:00", "task": "Study modern art", "goal": "Studying", "completed": false},
         {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-9-17": [
         {"time": "3:00", "task": "Study music composition", "goal": "Studying", "completed": false}
       ],
       "2024-9-18": [
-        {"time": "4:00", "task": "Study syntax and semantics", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": true}
+        {"time": "4:00", "task": "Study syntax and semantics", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-9-19": [
-        {"time": "2:00", "task": "Study cultural anthropology", "goal": "Studying", "completed": true}
+        {"time": "2:00", "task": "Study cultural anthropology", "goal": "Studying", "completed": false}
       ],
       "2024-9-20": [
-        {"time": "5:00", "task": "Study international relations", "goal": "Studying", "completed": true},
+        {"time": "5:00", "task": "Study international relations", "goal": "Studying", "completed": false},
         {"time": "14:00", "task": "Climbing gym session", "goal": "Climbing", "completed": false}
       ],
       "2024-9-23": [
-        {"time": "3:00", "task": "Study human geography", "goal": "Studying", "completed": true},
-        {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "3:00", "task": "Study human geography", "goal": "Studying", "completed": false},
+        {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-9-24": [
         {"time": "4:00", "task": "Study climate science", "goal": "Studying", "completed": false}
       ],
       "2024-9-25": [
-        {"time": "2:00", "task": "Study astrophysics", "goal": "Studying", "completed": true},
-        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": true}
+        {"time": "2:00", "task": "Study astrophysics", "goal": "Studying", "completed": false},
+        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-9-26": [
-        {"time": "5:00", "task": "Study probability theory", "goal": "Studying", "completed": true}
+        {"time": "5:00", "task": "Study probability theory", "goal": "Studying", "completed": false}
       ],
       "2024-9-27": [
-        {"time": "3:00", "task": "Study linear algebra", "goal": "Studying", "completed": true},
+        {"time": "3:00", "task": "Study linear algebra", "goal": "Studying", "completed": false},
         {"time": "12:00", "task": "Cook lunch", "goal": "Cooking", "completed": false}
       ],
       "2024-9-30": [
-        {"time": "4:00", "task": "Study biochemistry", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": true}
+        {"time": "4:00", "task": "Study biochemistry", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": false}
       ],
       "2024-10-0": [
         {"time": "2:00", "task": "Study ancient civilizations", "goal": "Studying", "completed": false}
       ],
       "2024-10-2": [
-        {"time": "5:00", "task": "Study comparative literature", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Prepare dinner", "goal": "Cooking", "completed": true}
+        {"time": "5:00", "task": "Study comparative literature", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Prepare dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-3": [
-        {"time": "3:00", "task": "Study quantum mechanics", "goal": "Studying", "completed": true}
+        {"time": "3:00", "task": "Study quantum mechanics", "goal": "Studying", "completed": false}
       ],
       "2024-10-4": [
-        {"time": "4:00", "task": "Study genetics", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": true}
+        {"time": "4:00", "task": "Study genetics", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-10-7": [
-        {"time": "2:00", "task": "Study data structures", "goal": "Studying", "completed": true},
+        {"time": "2:00", "task": "Study data structures", "goal": "Studying", "completed": false},
         {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": false}
       ],
       "2024-10-8": [
         {"time": "5:00", "task": "Study microeconomics", "goal": "Studying", "completed": false}
       ],
       "2024-10-9": [
-        {"time": "3:00", "task": "Study developmental psychology", "goal": "Studying", "completed": true},
-        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": true}
+        {"time": "3:00", "task": "Study developmental psychology", "goal": "Studying", "completed": false},
+        {"time": "8:00", "task": "Indoor climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-10-10": [
-        {"time": "4:00", "task": "Study research methods", "goal": "Studying", "completed": true}
+        {"time": "4:00", "task": "Study research methods", "goal": "Studying", "completed": false}
       ],
       "2024-10-11": [
-        {"time": "2:00", "task": "Study moral philosophy", "goal": "Studying", "completed": true},
-        {"time": "13:00", "task": "Cook lunch", "goal": "Cooking", "completed": true}
+        {"time": "2:00", "task": "Study moral philosophy", "goal": "Studying", "completed": false},
+        {"time": "13:00", "task": "Cook lunch", "goal": "Cooking", "completed": false}
       ],
       "2024-10-14": [
-        {"time": "5:00", "task": "Study contemporary art", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": true}
+        {"time": "5:00", "task": "Study contemporary art", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Bouldering session", "goal": "Climbing", "completed": false}
       ],
       "2024-10-15": [
         {"time": "3:00", "task": "Study music theory analysis", "goal": "Studying", "completed": false}
       ],
       "2024-10-16": [
-        {"time": "4:00", "task": "Study phonetics", "goal": "Studying", "completed": true},
+        {"time": "4:00", "task": "Study phonetics", "goal": "Studying", "completed": false},
         {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-17": [
-        {"time": "2:00", "task": "Study archaeological methods", "goal": "Studying", "completed": true}
+        {"time": "2:00", "task": "Study archaeological methods", "goal": "Studying", "completed": false}
       ],
       "2024-10-18": [
-        {"time": "5:00", "task": "Study comparative politics", "goal": "Studying", "completed": true},
-        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": true}
+        {"time": "5:00", "task": "Study comparative politics", "goal": "Studying", "completed": false},
+        {"time": "9:00", "task": "Rock climbing", "goal": "Climbing", "completed": false}
       ],
       "2024-10-21": [
-        {"time": "3:00", "task": "Study urban planning", "goal": "Studying", "completed": true},
-        {"time": "17:00", "task": "Prepare dinner", "goal": "Cooking", "completed": true}
+        {"time": "3:00", "task": "Study urban planning", "goal": "Studying", "completed": false},
+        {"time": "17:00", "task": "Prepare dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-22": [
         {"time": "4:00", "task": "Study renewable energy", "goal": "Studying", "completed": false}
       ],
       "2024-10-23": [
-        {"time": "2:00", "task": "Study cosmology", "goal": "Studying", "completed": true},
+        {"time": "2:00", "task": "Study cosmology", "goal": "Studying", "completed": false},
         {"time": "14:00", "task": "Climbing gym session", "goal": "Climbing", "completed": false}
       ],
       "2024-10-24": [
-        {"time": "5:00", "task": "Study statistical inference", "goal": "Studying", "completed": true}
+        {"time": "5:00", "task": "Study statistical inference", "goal": "Studying", "completed": false}
       ],
       "2024-10-25": [
-        {"time": "3:00", "task": "Study multivariable calculus", "goal": "Studying", "completed": true},
-        {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": true}
+        {"time": "3:00", "task": "Study multivariable calculus", "goal": "Studying", "completed": false},
+        {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": false}
       ]};
       exampleGoals = [
         { goal: "Studying", color: "#FFB3BA", rank: 1 },
@@ -584,143 +598,146 @@ const loadExampleData = (datasetNumber) => {
   } else if (datasetNumber === 2) {
     exampleData = {
       "2024-10-1": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-2": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-3": [
-        {"time": "6:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "6:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-4": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "21:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "21:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-5": [
-        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-6": [
-        {"time": "11:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "11:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-7": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "10:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "10:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-8": [
-        {"time": "5:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "5:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-9": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "19:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-10": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-11": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-12": [
-        {"time": "9:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "15:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "9:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "15:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-13": [
-        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-14": [
-        {"time": "8:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "8:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-15": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "19:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "19:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-16": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-17": [
-        {"time": "7:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "7:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-18": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "8:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "8:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-19": [
-        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "13:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "13:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-20": [
-        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-21": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "17:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "17:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-22": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-23": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-24": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "21:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "21:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-25": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false},
+        {"time": "3:00", "task": "Study multivariable calculus", "goal": "Studying", "completed": false, "completionTime": "2024-10-25T05:00:00Z"},
+        {"time": "20:00", "task": "Bake dessert", "goal": "Cooking", "completed": false, "completionTime": "2024-10-25T21:15:00Z"}
       ],
       "2024-10-26": [
-        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "15:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "15:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-27": [
-        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": true},
-        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": true}
+        {"time": "10:00", "task": "Weekend photoshoot", "goal": "Photography", "completed": false},
+        {"time": "14:00", "task": "Gardening session", "goal": "Gardening", "completed": false}
       ],
       "2024-10-28": [
-        {"time": "6:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "6:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-29": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
+        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false}
       ],
       "2024-10-30": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": true},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": true},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": true}
+        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false},
+        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false},
+        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false}
       ],
       "2024-10-31": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": true},
+        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false},
         {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
-      ]
+      ],
     };
+
     exampleGoals = [
       { goal: "Studying", color: "#FF6B6B", rank: 1 },
       { goal: "Climbing", color: "#4ECDC4", rank: 2 },
@@ -731,20 +748,91 @@ const loadExampleData = (datasetNumber) => {
       { goal: "Gardening", color: "#82E0AA", rank: 7 }
     ];
   } else if (datasetNumber === 3) {
-    exampleData = {
-      
-    };
+    exampleData = {};
     exampleGoals = [];
   }
+
   const exampleGoalsWithIds = exampleGoals.map((goal, index) => ({
     ...goal,
-    id: index + 1
+    id: index + 1,
+    completedCount: 0
   }));
 
   setGoals(exampleGoalsWithIds);
   setTasks(exampleData);
   localStorage.setItem('goals', JSON.stringify(exampleGoalsWithIds));
   localStorage.setItem('tasks', JSON.stringify(exampleData));
+
+  // Update completed task history
+  const completedTaskHistory = [];
+  for (const [day, tasks] of Object.entries(exampleData)) {
+    for (const task of tasks) {
+      if (task.completed) {
+        completedTaskHistory.push({ day, task });
+      }
+    }
+  }
+  setCompletedTaskHistory(completedTaskHistory);
+  localStorage.setItem('completedTasks', JSON.stringify(completedTaskHistory));
+};
+const generateTestTasks = () => {
+  const goals = JSON.parse(localStorage.getItem('goals') || '[]');
+  if (goals.length === 0) {
+    alert("No goals found. Please create goals first.");
+    return;
+  }
+
+  const tasks = {};
+  const generateRandomTime = () => {
+    const hour = Math.floor(Math.random() * 24).toString().padStart(2, '0');
+    const minute = (Math.floor(Math.random() * 4) * 15).toString().padStart(2, '0');
+    return `${hour}:${minute}`;
+  };
+
+  const generateRandomCompletionStatus = (date) => {
+    const taskDate = new Date(date);
+    const currentDate = new Date();
+    return taskDate < currentDate ? Math.random() > 0.3 : false;
+  };
+
+  for (let day = 1; day <= 31; day++) {
+    const dateKey = `2024-10-${day.toString().padStart(2, '0')}`;
+    const numTasks = Math.floor(Math.random() * 5) + 1; // 1 to 5 tasks per day
+    tasks[dateKey] = [];
+
+    for (let i = 0; i < numTasks; i++) {
+      const randomGoal = goals[Math.floor(Math.random() * goals.length)];
+      const newTask = {
+        time: generateRandomTime(),
+        task: `Task ${i + 1} for ${randomGoal.goal}`,
+        goal: randomGoal.goal,
+        completed: generateRandomCompletionStatus(dateKey),
+      };
+      if (newTask.completed) {
+        newTask.completionTime = new Date(dateKey + 'T' + newTask.time).toISOString();
+      }
+      tasks[dateKey].push(newTask);
+    }
+    tasks[dateKey].sort((a, b) => a.time.localeCompare(b.time));
+  }
+
+  setTasks(tasks);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+
+  // Update completed task history
+  const completedTaskHistory = Object.entries(tasks).flatMap(([day, dayTasks]) => 
+    dayTasks.filter(task => task.completed).map(task => ({ day, task }))
+  );
+  setCompletedTaskHistory(completedTaskHistory);
+  localStorage.setItem('completedTasks', JSON.stringify(completedTaskHistory));
+
+  // Update goal completion counts
+  const updatedGoals = goals.map(goal => {
+    const completedCount = completedTaskHistory.filter(item => item.task.goal === goal.goal).length;
+    return { ...goal, completedCount };
+  });
+  setGoals(updatedGoals);
+  localStorage.setItem('goals', JSON.stringify(updatedGoals));
 };
 
   return (
@@ -770,28 +858,30 @@ const loadExampleData = (datasetNumber) => {
         })}
             {Array.from({ length: daysInMonth }).map((_, day) => {
               const taskColors = getTaskColors(day + 1);
+              const isCurrentDay = day + 1 === currentDate.getDate() &&
+                                  currentDate.getMonth() === new Date().getMonth() &&
+                                  currentDate.getFullYear() === new Date().getFullYear();
               return (
                 <div
                   key={day + 1}
-                  className={`calendar-day ${taskColors.length > 0 ? 'calendar-day-with-tasks' : ''}`}
+                  className={`calendar-day ${taskColors.length > 0 ? 'calendar-day-with-tasks' : ''} ${isCurrentDay ? 'current-day' : ''}`}
                   onClick={() => handleDayClick(day + 1)}
                 >
                   <span className="day-number">{day + 1}</span>
                   <div className="task-color-container">
-                  {taskColors.map((color, index) => (
-                  <div
-                    key={index}
-                    className="task-color-block"
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
+                    {taskColors.map((color, index) => (
+                      <div
+                        key={index}
+                        className="task-color-block"
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
                   </div>
                 </div>
               );
             })}
 
       </div>
-          
 
 
 
@@ -890,6 +980,8 @@ const loadExampleData = (datasetNumber) => {
             <button onClick={() => loadExampleData(1)}>Load Example Data 1</button>
             <button onClick={() => loadExampleData(2)}>Load Example Data 2</button>
             <button onClick={() => loadExampleData(3)}>Load Example Data 3</button>
+            <button onClick={generateTestTasks}>Generate Tasks for October 2024</button>
+            <button onClick={() => loadExampleData(3)}>Clear All Tasks</button>
          </div>
             </div>
             
