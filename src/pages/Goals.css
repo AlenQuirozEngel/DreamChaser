@@ -94,7 +94,7 @@
   }
   
   .add-goal-btn:hover {
-    background-color: #358bb7;
+    background-color: var(--button-color);
   }
   
   .Delete-goal-btn {

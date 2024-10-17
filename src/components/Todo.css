@@ -1,0 +1,156 @@
+:root {
+    --button-color: #42A5F5; /* Blue accent */
+    --dark-bg: #1E1E1E; /* Dark background */
+    --dark-bg-light: #2A2A2A; /* Lighter dark background for containers */
+    --light-text: #ffffff; /* White text */
+    --border-radius: 8px; /* Slightly rounded edges */
+  }
+
+.todo-container {
+    padding: 20px;
+    background-color: var(--dark-bg-light);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .plan-day-btn {
+    padding: 12px 24px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  .plan-day-btn:hover {
+    background-color: var(--primary-color-dark);
+  }
+  
+  .saved-plan-box {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .goal-info {
+    width: 25%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .saved-plan-box h3 {
+    color: var(--button-color);
+  }
+  
+  .saved-plan-box p {
+    margin: 5px 0;
+  }
+  
+  .todo-section {
+    margin-bottom: 30px;
+  }
+  
+  .todo-section h3 {
+    color: var(--button-color);
+    margin-bottom: 10px;
+  }
+  
+  .todo-section p {
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  
+  .todo-input, .todo-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--button-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .todo-textarea {
+    height: 80px;
+  }
+  
+  .goal-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .add-goal-btn {
+    padding: 10px 20px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-goal-btn:hover {
+    background-color: var(--primary-color-dark);
+  }
+  
+  .save-btn {
+    padding: 12px 24px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .save-btn:hover {
+    background-color: var(--primary-color-dark);
+  }
+  /* Global Information Box */
+.global-info-box {
+    background-color: #333;
+    border: 2px solid var(--button-color);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  /* Search Bar */
+  .goal-search-bar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--button-color);
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  /* Goal Dropdown */
+  .goal-dropdown {
+    padding: 10px;
+    border: 1px solid var(--button-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* Task Box for Goals */
+  .task-box {
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  .circular-progress {
+    display: inline-block;
+    transform: rotate(-90deg);
+  }
+  
+  .circular-progress text {
+    transform: rotate(90deg);
+    transform-origin: center;
+  }
+  .goal-info p {
+    color: white;
+  }

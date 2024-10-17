@@ -1,3 +1,12 @@
+:root {
+  --button-color: #42A5F5; /* Blue accent */
+  --dark-bg: #1E1E1E; /* Dark background */
+  --dark-bg-light: #2A2A2A; /* Lighter dark background for containers */
+  --light-text: #ffffff; /* White text */
+  --border-radius: 8px; /* Slightly rounded edges */
+}
+
+
 .page-container {
   padding: 20px;
   background-color: var(--dark-bg-light);
@@ -33,10 +42,10 @@
   background-color: var(--primary-color-dark);
 }
 
-.engagement-ai-btn {
+.engagement-ai-btn, .todo-btn {
   display: inline-block;
   padding: 12px 24px;
-  background-color: var(--primary-color);
+  background-color: var(--button-color); /* Blue accent */
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -46,6 +55,10 @@
   margin-top: 20px;
 }
 
-.engagement-ai-btn:hover {
-  background-color: var(--primary-color-dark);
+.engagement-ai-btn:hover, .todo-btn:hover {
+  background-color: #57a6cd; /* Darker blue accent on hover */
+}
+.engagement-page h2,
+.engagement-page h3 {
+  color: var(--button-color);
 }

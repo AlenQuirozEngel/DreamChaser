@@ -11,6 +11,9 @@ const Engagement = () => {
   const [chartData, setChartData] = useState(null);
   const [showEngagementAI, setShowEngagementAI] = useState(false);
   const navigate = useNavigate();
+  const handleNavigateToTodo = () => {
+    navigate('/to-do');
+  };
 
   useEffect(() => {
     const fetchData = () => {
@@ -116,15 +119,18 @@ const Engagement = () => {
         <button className="engagement-ai-btn" onClick={handleNavigateToAI}>
           View Engagement AI
         </button>
+        <button className="todo-btn" onClick={handleNavigateToTodo}>
+          View To-Dos
+        </button>
       </div>
       <div className="chart-section">
-        <h3>Task Completion Rate (Line Graph)</h3>
+        <h3 style={{ color: 'var(--button-color)' }}>Task Completion Rate (Line Graph)</h3>
         <Line data={chartData.lineChartData} options={options} />
 
-        <h3>Task Completion per Hour (Bar Chart)</h3>
+        <h3 style={{ color: 'var(--button-color)' }}>Task Completion per Hour (Bar Chart)</h3>
         <Bar data={chartData.barChartData} options={options} />
 
-        <h3>Task Distribution by Goal (Donut Chart)</h3>
+        <h3 style={{ color: 'var(--button-color)' }}>Task Distribution by Goal (Donut Chart)</h3>
         <Doughnut data={chartData.donutChartData} />
       </div>
 

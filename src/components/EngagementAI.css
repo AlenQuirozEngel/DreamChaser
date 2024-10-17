@@ -1,16 +1,17 @@
 :root {
-  --ai-button-color: #42A5F5;
-  --ai-dark-bg: #1E1E1E;
-  --ai-dark-bg-light: #2A2A2A;
-  --ai-light-text: #ffffff;
-  --ai-border-radius: 8px;
+  --button-color: #42A5F5; /* Blue accent */
+  --dark-bg: #1E1E1E; /* Dark background */
+  --dark-bg-light: #2A2A2A; /* Lighter dark background for containers */
+  --light-text: #ffffff; /* White text */
+  --border-radius: 8px; /* Slightly rounded edges */
 }
 
+
 .engagement-ai {
-  background-color: var(--ai-dark-bg-light);
-  color: var(--ai-light-text);
+  background-color: var(--dark-bg-light);
+  color: var(--light-text);
   padding: 20px;
-  border-radius: var(--ai-border-radius);
+  border-radius: var(--border-radius);
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
@@ -23,7 +24,7 @@
   text-align: center;
   font-size: 2rem;
   margin-bottom: 20px;
-  color: var(--ai-button-color);
+  color: var(--button-color);
 }
 
 .engagement-ai section {
@@ -33,7 +34,7 @@
 .engagement-ai h4 {
   font-size: 1.5rem;
   margin-bottom: 10px;
-  color: var(--ai-button-color);
+  color: var(--button-color);
 }
 
 .engagement-ai p {
@@ -43,26 +44,26 @@
 
 .progress-bar {
   background-color: #555;
-  border-radius: var(--ai-border-radius);
+  border-radius: var(--border-radius);
   height: 20px;
   overflow: hidden;
   margin-top: 10px;
 }
 
 .progress {
-  background-color: var(--ai-button-color);
+  background-color: var(--button-color);
   height: 100%;
-  border-radius: var(--ai-border-radius);
+  border-radius: var(--border-radius);
   transition: width 0.3s ease;
 }
   .engagement-ai-btn,
   .toggle-ai-btn,
   .close-btn {
-    background-color: var(--ai-button-color);
-    color: var(--ai-light-text);
+    background-color: var(--button-color);
+    color: var(--light-text);
     border: none;
     padding: 10px 20px;
-    border-radius: var(--ai-border-radius);
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: block;
@@ -84,12 +85,12 @@
 }
 
 .goal-progress-item .progress-bar {
-  background-color: var(--ai-dark-bg);
+  background-color: var(--dark-bg);
   height: 15px;
 }
 
 .goal-progress-item .progress {
-  background-color: var(--ai-button-color);
+  background-color: var(--button-color);
   height: 100%;
 }
 
@@ -101,7 +102,7 @@
 }
 
 .page-title {
-  color: var(--ai-light-text);
+  color: var(--light-text);
   font-size: 2.5rem;
 }
 
@@ -110,7 +111,7 @@
 }
 
 .chart-section h3 {
-  color: var(--ai-button-color);
+  color: var(--button-color);
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
@@ -122,33 +123,33 @@
 }
 
 .goal-button {
-  background-color: var(--ai-dark-bg);
-  color: var(--ai-light-text);
-  border: 1px solid var(--ai-button-color);
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+  border: 1px solid var(--button-color);
   padding: 10px 15px;
   margin: 0 5px;
-  border-radius: var(--ai-border-radius);
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .goal-button.active {
-  background-color: var(--ai-button-color);
+  background-color: var(--button-color);
 }
 
 .goal-button:hover {
-  background-color: var(--ai-button-color);
+  background-color: var(--button-color);
 }
 
 .goal-analysis {
-  background-color: var(--ai-dark-bg);
+  background-color: var(--dark-bg);
   padding: 15px;
-  border-radius: var(--ai-border-radius);
+  border-radius: var(--border-radius);
   margin-bottom: 20px;
 }
 
 .goal-analysis h4 {
-  color: var(--ai-button-color);
+  color: var(--button-color);
   margin-bottom: 10px;
 }
 

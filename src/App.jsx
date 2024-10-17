@@ -6,11 +6,16 @@ import Account from './pages/Account.jsx';
 import Goals from './pages/Goals.jsx';
 import EngagementAI from './components/EngagementAI.jsx'; // Import the new component
 import Navbar from './components/Navbar.jsx'; // Import Navbar
+import Todo from './components/Todo.jsx';
 
 
 function App() {
   const [goals, setGoals] = useState([]);
   const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+    const colorPreference = localStorage.getItem('colorPreference') || '#42A5F5';
+    document.documentElement.style.setProperty('--button-color', colorPreference);
+  }, []);
 
   return (
     <Router>
@@ -24,6 +29,7 @@ function App() {
             <Route path="/account" element={<Account />} />
             <Route path="/" element={<Calendar tasks={tasks} goals={goals}/>} /> {/* Default Route */}
             <Route path="/engagement-ai" element={<EngagementAI />} /> 
+            <Route path="/to-do" element={<Todo />} />
           </Routes>
         </div>
 

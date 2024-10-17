@@ -125,25 +125,55 @@ const EngagementAI = ({ currentDate }) => {
   const generateStudyTactics = () => {
     const goalsData = JSON.parse(localStorage.getItem('goals') || '[]');
     const tasksData = JSON.parse(localStorage.getItem('tasks') || '{}');
-
+    const now = new Date();
+    const favoriteGoal = localStorage.getItem('favoriteGoal');
+    const hardestGoal = localStorage.getItem('hardestGoal');
+  
+    const incompletionRates = goalsData.map(goal => {
+      const pastTasks = Object.values(tasksData).flat().filter(task => 
+        task.goal === goal.goal && new Date(task.date) < now
+      );
+      const incompleteTasks = pastTasks.filter(task => !task.completed);
+      return {
+        goal: goal.goal,
+        rate: pastTasks.length > 0 ? incompleteTasks.length / pastTasks.length : 0
+      };
+    }).sort((a, b) => b.rate - a.rate);
+  
     const tactics = goalsData.map(goal => {
-      const completedTasks = Object.values(tasksData).flat().filter(task => task.goal === goal.goal && task.completed);
-      const averageCompletionTime = completedTasks.reduce((sum, task) => sum + (new Date(task.completionTime) - new Date(task.time)), 0) / completedTasks.length;
-
-      let tactic = '';
-      if (averageCompletionTime < 30 * 60 * 1000) {
-        tactic = 'Use the Pomodoro Technique: 25 minutes of focused work, 5-minute break.';
-      } else if (averageCompletionTime < 60 * 60 * 1000) {
-        tactic = 'Try the Flowtime Technique: Work until you need a break, then take one.';
+      const incompletionRate = incompletionRates.find(r => r.goal === goal.goal).rate;
+      let breakStrategy;
+  
+      if (goal.goal === hardestGoal && incompletionRates.indexOf(goal.goal) < 2) {
+        breakStrategy = '15 minutes break every 45 minutes';
+      } else if (incompletionRate > 0.7) {
+        breakStrategy = '10 minutes break every 30 minutes';
+      } else if (incompletionRate > 0.4) {
+        breakStrategy = '5 minutes break every 30 minutes';
+      } else if (goal.goal === favoriteGoal) {
+        breakStrategy = 'No scheduled breaks, take them as needed';
       } else {
-        tactic = 'Consider breaking this task into smaller subtasks for better focus.';
+        breakStrategy = '5 minutes break every hour';
       }
-
+  
+      let tactic = `For ${goal.goal}: ${breakStrategy}. `;
+      
+      if (incompletionRate > 0.5) {
+        tactic += 'Consider breaking tasks into smaller, manageable subtasks. ';
+      }
+      if (goal.goal === hardestGoal) {
+        tactic += 'Use the Pomodoro Technique to maintain focus. ';
+      }
+      if (goal.goal === favoriteGoal) {
+        tactic += 'Leverage your enthusiasm to tackle challenging aspects. ';
+      }
+  
       return { goal: goal.goal, tactic };
     });
-
+  
     setStudyTactics(tactics);
   };
+  
     // Function to suggest the next task based on deadlines and urgency
     const suggestFocusTask = () => {
       const goalsData = JSON.parse(localStorage.getItem('goals') || '[]');
