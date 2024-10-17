@@ -371,3 +371,7 @@
 .suggest-schedule-btn:hover {
   background-color: #358bb7;
 }
+.current-day {
+  background-color: #71e8b2;
+  border: 2px solid #1890ff;
+}

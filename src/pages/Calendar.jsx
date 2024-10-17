@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.css';
 import AddTaskForm from '../components/AddTaskForm';
+import EngagementAI from '../components/EngagementAI';
 
 const Calendar = () => {
   const [tasks, setTasks] = useState(() => {
@@ -845,28 +846,31 @@ const generateTestTasks = () => {
         })}
             {Array.from({ length: daysInMonth }).map((_, day) => {
               const taskColors = getTaskColors(day + 1);
+              const isCurrentDay = day + 1 === currentDate.getDate() &&
+                                  currentDate.getMonth() === new Date().getMonth() &&
+                                  currentDate.getFullYear() === new Date().getFullYear();
               return (
                 <div
                   key={day + 1}
-                  className={`calendar-day ${taskColors.length > 0 ? 'calendar-day-with-tasks' : ''}`}
+                  className={`calendar-day ${taskColors.length > 0 ? 'calendar-day-with-tasks' : ''} ${isCurrentDay ? 'current-day' : ''}`}
                   onClick={() => handleDayClick(day + 1)}
                 >
                   <span className="day-number">{day + 1}</span>
                   <div className="task-color-container">
-                  {taskColors.map((color, index) => (
-                  <div
-                    key={index}
-                    className="task-color-block"
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
+                    {taskColors.map((color, index) => (
+                      <div
+                        key={index}
+                        className="task-color-block"
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
                   </div>
                 </div>
               );
             })}
 
       </div>
-          
+      <EngagementAI currentDate={currentDate} />
 
 
 

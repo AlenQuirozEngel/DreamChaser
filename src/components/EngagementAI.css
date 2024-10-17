@@ -116,3 +116,44 @@
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
+
+.goal-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.goal-button {
+  background-color: var(--ai-dark-bg);
+  color: var(--ai-light-text);
+  border: 1px solid var(--ai-button-color);
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: var(--ai-border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.goal-button.active {
+  background-color: var(--ai-button-color);
+}
+
+.goal-button:hover {
+  background-color: var(--ai-button-color);
+}
+
+.goal-analysis {
+  background-color: var(--ai-dark-bg);
+  padding: 15px;
+  border-radius: var(--ai-border-radius);
+  margin-bottom: 20px;
+}
+
+.goal-analysis h4 {
+  color: var(--ai-button-color);
+  margin-bottom: 10px;
+}
+
+.goal-analysis p {
+  margin: 5px 0;
+}

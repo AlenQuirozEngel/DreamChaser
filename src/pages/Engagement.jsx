@@ -70,10 +70,16 @@ const Engagement = () => {
           labels: Object.keys(taskDistributionData),
           datasets: [{
             data: Object.values(taskDistributionData),
-            backgroundColor: goalsWithColors.map(goal => goal.backgroundColor),
-            borderColor: goalsWithColors.map(goal => goal.borderColor),
+            backgroundColor: Object.keys(taskDistributionData).map(goalName => {
+              const goal = goalsWithColors.find(g => g.goal === goalName);
+              return goal ? goal.backgroundColor : 'rgba(54, 162, 235, 0.6)'; // Default to a fallback color if not found
+            }),
+            borderColor: Object.keys(taskDistributionData).map(goalName => {
+              const goal = goalsWithColors.find(g => g.goal === goalName);
+              return goal ? goal.borderColor : 'rgba(54, 162, 235, 1)'; // Default to a fallback color if not found
+            }),
           }],
-        },
+        }
       });
     };
 
