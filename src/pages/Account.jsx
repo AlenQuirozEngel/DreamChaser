@@ -65,8 +65,6 @@ const Account = () => {
 
       {showSurvey && <Survey onSurveyComplete={handleSurveyComplete} />}
 
-      <h2 className="page-title">Study Time Graph</h2>
-
     </div>
   );
 };
