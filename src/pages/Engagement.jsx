@@ -128,10 +128,6 @@ const Engagement = () => {
         <Doughnut data={chartData.donutChartData} />
       </div>
 
-      <button onClick={toggleEngagementAI} className="toggle-ai-btn">
-        {showEngagementAI ? 'Hide Engagement AI' : 'Show Engagement AI'}
-      </button>
-
       {showEngagementAI && <EngagementAI />}
     </div>
   );

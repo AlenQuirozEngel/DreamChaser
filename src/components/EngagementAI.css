@@ -55,28 +55,26 @@
   border-radius: var(--ai-border-radius);
   transition: width 0.3s ease;
 }
+  .engagement-ai-btn,
+  .toggle-ai-btn,
+  .close-btn {
+    background-color: var(--ai-button-color);
+    color: var(--ai-light-text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--ai-border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+  }
 
-.engagement-ai-btn,
-.toggle-ai-btn,
-.close-btn {
-  background-color: var(--ai-button-color);
-  color: var(--ai-light-text);
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--ai-border-radius);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-}
-
-.engagement-ai-btn:hover,
-.toggle-ai-btn:hover,
-.close-btn:hover {
-  background-color: #358bb7;
-}
-
+  .engagement-ai-btn:hover,
+  .toggle-ai-btn:hover,
+  .close-btn:hover {
+    background-color: #358bb7;
+  }
 .goal-progress-item {
   margin-bottom: 15px;
 }

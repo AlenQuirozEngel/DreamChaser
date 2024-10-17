@@ -227,7 +227,7 @@ const EngagementAI = ({ currentDate }) => {
 
   const analyzeGoal = () => {
     const tasksData = JSON.parse(localStorage.getItem('tasks') || '{}');
-    const today = new Date(currentDate);
+    const today = getCurrentDay();
     today.setHours(0, 0, 0, 0);
 
     const goalTasks = Object.entries(tasksData).flatMap(([date, tasks]) => 
@@ -402,4 +402,8 @@ const suggestImmediateTask = () => {
   }
 
   return null;
+};
+
+const getCurrentDay = () => {
+  return new Date();
 };
