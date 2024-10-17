@@ -133,7 +133,7 @@ const Calendar = () => {
       task.completed = true;
       task.completionTime = new Date().toISOString();
       return updatedTasks;
-    });
+    })
   
     // Add task completion time and save to history
     const completedTask = { ...tasks[day][index], completionTime: new Date().toISOString() };
@@ -785,26 +785,55 @@ const generateTestTasks = () => {
   const tasks = {};
   const generateRandomTime = () => {
     const hour = Math.floor(Math.random() * 24).toString().padStart(2, '0');
-    const minute = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+    const minute = (Math.floor(Math.random() * 4) * 15).toString().padStart(2, '0');
     return `${hour}:${minute}`;
   };
 
-  const generateRandomCompletionStatus = () => Math.random() > 0.5;
+  const generateRandomCompletionStatus = (date) => {
+    const taskDate = new Date(date);
+    const currentDate = new Date();
+    return taskDate < currentDate ? Math.random() > 0.3 : false;
+  };
 
   for (let day = 1; day <= 31; day++) {
     const dateKey = `2024-10-${day.toString().padStart(2, '0')}`;
-    tasks[dateKey] = goals.map(goal => ({
-      time: generateRandomTime(),
-      task: `Task for ${goal.goal}`,
-      goal: goal.goal,
-      completed: generateRandomCompletionStatus(),
-    }));
+    const numTasks = Math.floor(Math.random() * 5) + 1; // 1 to 5 tasks per day
+    tasks[dateKey] = [];
+
+    for (let i = 0; i < numTasks; i++) {
+      const randomGoal = goals[Math.floor(Math.random() * goals.length)];
+      const newTask = {
+        time: generateRandomTime(),
+        task: `Task ${i + 1} for ${randomGoal.goal}`,
+        goal: randomGoal.goal,
+        completed: generateRandomCompletionStatus(dateKey),
+      };
+      if (newTask.completed) {
+        newTask.completionTime = new Date(dateKey + 'T' + newTask.time).toISOString();
+      }
+      tasks[dateKey].push(newTask);
+    }
+    tasks[dateKey].sort((a, b) => a.time.localeCompare(b.time));
   }
 
   setTasks(tasks);
   localStorage.setItem('tasks', JSON.stringify(tasks));
-};
 
+  // Update completed task history
+  const completedTaskHistory = Object.entries(tasks).flatMap(([day, dayTasks]) => 
+    dayTasks.filter(task => task.completed).map(task => ({ day, task }))
+  );
+  setCompletedTaskHistory(completedTaskHistory);
+  localStorage.setItem('completedTasks', JSON.stringify(completedTaskHistory));
+
+  // Update goal completion counts
+  const updatedGoals = goals.map(goal => {
+    const completedCount = completedTaskHistory.filter(item => item.task.goal === goal.goal).length;
+    return { ...goal, completedCount };
+  });
+  setGoals(updatedGoals);
+  localStorage.setItem('goals', JSON.stringify(updatedGoals));
+};
 
   return (
     <div className="calendar-page">

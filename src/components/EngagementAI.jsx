@@ -88,7 +88,7 @@ const EngagementAI = ({ currentDate }) => {
           taskTimes.push(taskHour);
 
           if (taskHour >= 5 && taskHour < 12) morningTasks++;
-          else if (taskHour >= 12 && taskHour < 18) afternoonTasks++;
+          else if (taskHour >= 12 && taskHour < 19) afternoonTasks++;
           else nightTasks++;
         }
       });
@@ -96,11 +96,11 @@ const EngagementAI = ({ currentDate }) => {
 
     let pattern;
     if (morningTasks > afternoonTasks && morningTasks > nightTasks) {
-      pattern = "You're a morning person";
+      pattern = "You're a MORNING PERSON (most tasks completed in the morning)";
     } else if (afternoonTasks > morningTasks && afternoonTasks > nightTasks) {
-      pattern = "You're an afternoon person";
+      pattern = "You're an AFTERNOON PERSON (most tasks completed in the afternoon)";
     } else if (nightTasks > morningTasks && nightTasks > afternoonTasks) {
-      pattern = "You're a night owl";
+      pattern = "You're a NIGHT OWL (most tasks completed at night)";
     } else {
       pattern = "Your productivity is evenly distributed throughout the day";
     }
@@ -213,15 +213,22 @@ const EngagementAI = ({ currentDate }) => {
   const calculateGoalProgress = () => {
     const goalsData = JSON.parse(localStorage.getItem('goals') || '[]');
     const tasksData = JSON.parse(localStorage.getItem('tasks') || '{}');
-
+    const now = new Date();
+  
     const progress = goalsData.map(goal => {
-      const totalTasks = Object.values(tasksData).flat().filter(task => task.goal === goal.goal);
-      const completedTasks = totalTasks.filter(task => task.completed);
-      const completionPercentage = (completedTasks.length / totalTasks.length) * 100 || 0;
-
+      const deadline = new Date(goal.deadline);
+      const relevantTasks = Object.entries(tasksData)
+        .filter(([date]) => new Date(date) <= deadline)
+        .flatMap(([, tasks]) => tasks.filter(task => task.goal === goal.goal));
+  
+      const completedTasks = relevantTasks.filter(task => task.completed);
+      const completionPercentage = relevantTasks.length > 0
+        ? (completedTasks.length / relevantTasks.length) * 100
+        : 0;
+  
       return { goal: goal.goal, progress: completionPercentage };
     });
-
+  
     setGoalProgress(progress);
   };
 
