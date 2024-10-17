@@ -200,6 +200,20 @@ const Calendar = () => {
     const suggestedTasks = {};
     const messages = new Set();
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+    
+    // Find empty days
+    const emptyDays = [];
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateString = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
+      if (!tasks[dateString] || tasks[dateString].length === 0) {
+        emptyDays.push(dateString);
+      }
+    }
+  
+    if (emptyDays.length === 0) {
+      return { error: "No empty days available for scheduling." };
+    }
+  
     goals.sort((a, b) => a.rank - b.rank);
   
     const goalPatterns = {};
@@ -302,10 +316,9 @@ const Calendar = () => {
       return Math.random() < adjustedProbability;
     };
   
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateString = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
-      const dayOfWeek = new Date(dateString).getDay();
+    emptyDays.forEach(dateString => {
       suggestedTasks[dateString] = [];
+      const dayOfWeek = new Date(dateString).getDay();
       
       for (const goal of goals) {
         if (suggestedTasks[dateString].length >= softLimit) break;
@@ -317,7 +330,7 @@ const Calendar = () => {
           }
         }
       }
-    }
+    });
   
     setSchedulingMessages(Array.from(messages));
     return suggestedTasks;
@@ -334,17 +347,23 @@ const Calendar = () => {
   
   
   
+  
 
   const handleSuggestSchedule = () => {
     const suggested = suggestSchedule();
-    setTasks(prevTasks => {
-      const mergedTasks = {...prevTasks};
-      for (const day in suggested) {
-        mergedTasks[day] = mergedTasks[day] ? [...mergedTasks[day], ...suggested[day]] : [...suggested[day]];
-      }
-      return mergedTasks;
-    });
+    if (suggested.error) {
+      setSchedulingMessages([suggested.error]);
+    } else {
+      setTasks(prevTasks => {
+        const mergedTasks = {...prevTasks};
+        for (const day in suggested) {
+          mergedTasks[day] = suggested[day];
+        }
+        return mergedTasks;
+      });
+    }
   };
+  
 
 const loadExampleData = (datasetNumber) => {
   let exampleData;
