@@ -737,24 +737,7 @@ const Calendar = () => {
         {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": true}
       ],
     };
-    exampleGoals = [
-      { goal: "Studying", color: "#FFB3BA", rank: 1 },
-      { goal: "Climbing", color: "#BAFFC9", rank: 2 },
-      { goal: "Cooking", color: "#BAE1FF", rank: 3 }
-    ];
-  } else if (datasetNumber === 2) {
-    exampleData = {
-      "2024-10-1": [
-        {"time": "7:00", "task": "Morning climb", "goal": "Climbing", "completed": false, "completionTime": "2024-10-01T08:30:00Z"},
-        {"time": "9:00", "task": "Study session", "goal": "Studying", "completed": false, "completionTime": "2024-10-01T11:00:00Z"},
-        {"time": "18:00", "task": "Cook dinner", "goal": "Cooking", "completed": false, "completionTime": "2024-10-01T19:15:00Z"}
-      ],
-      // ... (all the dates and tasks you provided)
-      "2024-10-31": [
-        {"time": "6:30", "task": "Morning meditation", "goal": "Meditation", "completed": false, "completionTime": "2024-10-31T07:00:00Z"},
-        {"time": "20:00", "task": "Guitar practice", "goal": "Learning Guitar", "completed": false, "completionTime": "2024-10-31T21:30:00Z"}
-      ]
-    };
+
     exampleGoals = [
       { goal: "Studying", color: "#FF6B6B", rank: 1 },
       { goal: "Climbing", color: "#4ECDC4", rank: 2 },
@@ -870,7 +853,7 @@ const generateTestTasks = () => {
             })}
 
       </div>
-      <EngagementAI currentDate={currentDate} />
+
 
 
 
