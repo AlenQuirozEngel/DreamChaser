@@ -11,7 +11,8 @@ const AddTaskForm = ({ onClose, addTask, goals, selectedDay }) => {
 
   const handleSubmit = () => {
     if (newTask.time && newTask.task) {
-      addTask(newTask, selectedDay); 
+      const taskColor = newTask.goal ? goals.find(g => g.goal === newTask.goal)?.color : 'rgba(128, 128, 128, 0.5)';
+      addTask({ ...newTask, color: taskColor }, selectedDay);
       setNewTask({ time: '', task: '', goal: '' });
       onClose(); 
     }

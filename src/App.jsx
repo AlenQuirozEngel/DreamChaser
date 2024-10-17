@@ -4,6 +4,7 @@ import Calendar from './pages/Calendar.jsx';
 import Engagement from './pages/Engagement.jsx';
 import Account from './pages/Account.jsx';
 import Goals from './pages/Goals.jsx';
+import EngagementAI from './components/EngagementAI.jsx'; // Import the new component
 import Navbar from './components/Navbar.jsx'; // Import Navbar
 
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/goals" element={<Goals goals={goals}/>} />
             <Route path="/account" element={<Account />} />
             <Route path="/" element={<Calendar tasks={tasks} goals={goals}/>} /> {/* Default Route */}
+            <Route path="/engagement-ai" element={<EngagementAI />} /> 
           </Routes>
         </div>
 

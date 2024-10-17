@@ -1,0 +1,32 @@
+.engagement-ai {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .engagement-ai h3 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .engagement-ai section {
+    margin-bottom: 20px;
+  }
+  
+  .engagement-ai h4 {
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .engagement-ai p {
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .sleep-schedule, .study-tactics, .next-task {
+    background-color: white;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
