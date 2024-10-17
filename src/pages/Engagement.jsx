@@ -40,9 +40,11 @@ const Engagement = () => {
 
       const goalsWithColors = goalsData.map(goal => ({
         ...goal,
-        backgroundColor: goal.color,
-        borderColor: goal.color,
+        backgroundColor: goal.color,  // Use the goal's color for the background
+        borderColor: goal.color,      // Use the goal's color for the border
       }));
+      
+      
 
       setChartData({
         lineChartData: {

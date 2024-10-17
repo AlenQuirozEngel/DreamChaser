@@ -83,6 +83,41 @@ const Goals = () => {
     setGoals(updatedGoals);
   };
 
+  const generateTestGoals = () => {
+    const testGoals = [
+      { goal: 'Music', color: '#FF6347' },
+      { goal: 'Piano', color: '#4682B4' },
+      { goal: 'Guitar', color: '#32CD32' },
+      { goal: 'Intelligent User Interfaces', color: '#FFD700' },
+      { goal: 'Project 1', color: '#FF4500' },
+      { goal: 'Project 2', color: '#8A2BE2' },
+      { goal: 'Reading', color: '#FF69B4' },
+      { goal: 'Exercise', color: '#20B2AA' },
+      { goal: 'Climbing', color: '#FF8C00' },
+      { goal: 'Study AI', color: '#ADFF2F' },
+    ];
+  
+    const generateRandomDeadline = () => {
+      const today = new Date();
+      const randomDays = Math.floor(Math.random() * 30); // Random days between 0 and 30
+      const deadline = new Date(today);
+      deadline.setDate(today.getDate() + randomDays);
+      return deadline.toISOString().split('T')[0]; // Return as YYYY-MM-DD
+    };
+  
+    const newGoals = testGoals.map((testGoal, index) => ({
+      id: goals.length + index + 1, 
+      goal: testGoal.goal, 
+      color: testGoal.color, 
+      deadline: generateRandomDeadline(), // Assign a random deadline
+      rank: goals.length + index + 1,
+      completedCount: 0,
+    }));
+  
+    setGoals([...goals, ...newGoals]);
+  };
+  
+  
   return (
     <div className="goals-page">
       <h2>Your Goals</h2>
@@ -92,6 +127,8 @@ const Goals = () => {
       >
         {showDeleteButtons ? 'Cancel Deletion' : 'Delete Goals'}
       </button>
+      
+      <button onClick={generateTestGoals} className="generate-goals-btn">Generate Test Goals</button>
 
       {/* Goals List with Drag and Drop */}
       <ul className="goal-list">
@@ -137,6 +174,7 @@ const Goals = () => {
           placeholder="Optional deadline"
         />
         <button onClick={addGoal} className="add-goal-btn">Add Goal</button>
+
       </div>
     </div>
   );

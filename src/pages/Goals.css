@@ -130,4 +130,18 @@
   .toggle-Delete-btn:hover {
     background-color: #358bb7;
   }
+  .generate-goals-btn {
+    background-color: var(--button-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .generate-goals-btn:hover {
+    background-color: #358bb7;
+  }
   

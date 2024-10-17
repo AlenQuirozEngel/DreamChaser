@@ -791,6 +791,36 @@ const Calendar = () => {
   setCompletedTaskHistory(completedTaskHistory);
   localStorage.setItem('completedTasks', JSON.stringify(completedTaskHistory));
 };
+const generateTestTasks = () => {
+  const goals = JSON.parse(localStorage.getItem('goals') || '[]');
+  if (goals.length === 0) {
+    alert("No goals found. Please create goals first.");
+    return;
+  }
+
+  const tasks = {};
+  const generateRandomTime = () => {
+    const hour = Math.floor(Math.random() * 24).toString().padStart(2, '0');
+    const minute = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+    return `${hour}:${minute}`;
+  };
+
+  const generateRandomCompletionStatus = () => Math.random() > 0.5;
+
+  for (let day = 1; day <= 31; day++) {
+    const dateKey = `2024-10-${day.toString().padStart(2, '0')}`;
+    tasks[dateKey] = goals.map(goal => ({
+      time: generateRandomTime(),
+      task: `Task for ${goal.goal}`,
+      goal: goal.goal,
+      completed: generateRandomCompletionStatus(),
+    }));
+  }
+
+  setTasks(tasks);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+};
+
 
   return (
     <div className="calendar-page">
@@ -935,6 +965,8 @@ const Calendar = () => {
             <button onClick={() => loadExampleData(1)}>Load Example Data 1</button>
             <button onClick={() => loadExampleData(2)}>Load Example Data 2</button>
             <button onClick={() => loadExampleData(3)}>Load Example Data 3</button>
+            <button onClick={generateTestTasks}>Generate Tasks for October 2024</button>
+            <button onClick={() => loadExampleData(3)}>Clear All Tasks</button>
          </div>
             </div>
             
